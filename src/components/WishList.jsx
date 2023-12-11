@@ -4,7 +4,9 @@ import { useContextWishes } from "../context/useContextWishes";
 const WishList = () => {
   const [editingIndex, setEditingIndex] = useState(-1);
   const [editedName, setEditedName] = useState("");
-  const { wishes, deleteWish, clearWishes, editWish } = useContextWishes();
+  const { wishes, deleteWish, clearWishes, editWish, saveChecked } =
+    useContextWishes();
+
   const handleDelete = (idx) => {
     deleteWish(idx);
   };
@@ -21,6 +23,10 @@ const WishList = () => {
     console.log("Edited Name:", editedName);
     editWish(idx, editedName);
     setEditingIndex(-1);
+  };
+
+  const handleCheck = (idx) => {
+    saveChecked(idx);
   };
 
   return (
@@ -42,8 +48,10 @@ const WishList = () => {
                 </form>
               ) : (
                 <>
-                  <span onClick={() => handleEdit(idx, wish)}>{wish}</span>
-                  <input type="checkbox" />
+                  <span onClick={() => handleEdit(idx, wish.name)}>
+                    {wish.name}
+                  </span>
+                  <input type="checkbox" onChange={() => handleCheck(idx)} />
                   <button onClick={() => handleDelete(idx)}>DELETE</button>
                 </>
               )}

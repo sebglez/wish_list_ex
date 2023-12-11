@@ -1,16 +1,23 @@
 import "./App.css";
-import { Counter } from "./components/Counter";
-import CreateWish from "./components/CreateWish";
-import WishList from "./components/WishList";
 import { ContextProvider } from "./context/useContextWishes";
+import ActiveWishes from "./pages/ActiveWished";
+import CompletedWishes from "./pages/CompletedWishes";
+import Home from "./pages/Home";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+const router = createBrowserRouter([
+  { path: "/", element: <Home></Home> },
+
+  { path: "/completed", element: <CompletedWishes></CompletedWishes> },
+
+  { path: "/active", element: <ActiveWishes></ActiveWishes> },
+]);
 
 function App() {
   return (
     <div>
       <ContextProvider>
-        <WishList></WishList>
-        <CreateWish></CreateWish>
-        <Counter></Counter>
+        <RouterProvider router={router}></RouterProvider>
       </ContextProvider>
     </div>
   );

@@ -1,13 +1,22 @@
 import React from "react";
 import { useContextWishes } from "../context/useContextWishes";
+import { Link } from "react-router-dom";
 
-export function Counter() {
+const Counter = () => {
   const { wishes } = useContextWishes();
   const totalItems = wishes.length;
 
   return (
-    <footer>
+    <>
       <p>Total Wishes: {totalItems}</p>
-    </footer>
+      <Link to={"/completed"}>
+        <p>Completed Wishes</p>;
+      </Link>
+      <Link to={"/active"}>
+        <p>Active Wishes</p>
+      </Link>
+    </>
   );
-}
+};
+
+export default Counter;
