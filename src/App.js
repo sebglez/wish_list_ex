@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { ContextProvider } from "./context/useContextWishes";
 import ActiveWishes from "./pages/ActiveWished";
 import CompletedWishes from "./pages/CompletedWishes";
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div>
+    <div className="mainDiv">
       <ContextProvider>
         <RouterProvider router={router}></RouterProvider>
       </ContextProvider>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useContextWishes } from "../context/useContextWishes";
+import style from "./WishList.module.scss";
 
 const CreateWish = () => {
   const { addWish } = useContextWishes();
@@ -18,16 +19,19 @@ const CreateWish = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={style.styleForm}>
       <input
         name="wishTitle"
         type="text"
+        className={style.labelWish}
         value={inputValue}
         onChange={handleInputChange}
-        placeholder="Enter your wish"
+        placeholder="Enter your wishes"
         autoComplete="off"
       />
-      <button type="submit">Add to Wishlist</button>
+      <button type="submit" className={style.btnAdd}>
+        Add to Wishlist
+      </button>
     </form>
   );
 };

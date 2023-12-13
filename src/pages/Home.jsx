@@ -7,8 +7,9 @@ import withHome from "../hoc/WithHome";
 const Home = () => {
   return (
     <div>
-      <WishList />
+      {" "}
       <CreateWish />
+      <WishList />
       <Counter />
     </div>
   );
