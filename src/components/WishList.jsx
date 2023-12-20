@@ -15,26 +15,26 @@ const WishList = () => {
   const { wishes, deleteWish, clearWishes, editWish, saveChecked } =
     useContextWishes();
 
-  const handleDelete = (idx) => {
-    deleteWish(idx);
+  const handleDelete = (id) => {
+    deleteWish(id);
   };
 
   const handleClear = () => {
     clearWishes();
   };
 
-  const handleEdit = (idx, currentName) => {
-    setEditingIndex(idx);
+  const handleEdit = (id, currentName) => {
+    setEditingIndex(id);
     setEditedName(currentName);
   };
-  const handleSave = (idx) => {
+  const handleSave = (id) => {
     console.log("Edited Name:", editedName);
-    editWish(idx, editedName);
+    editWish(id, editedName);
     setEditingIndex(-1);
   };
 
-  const handleCheck = (idx) => {
-    saveChecked(idx);
+  const handleCheck = (id) => {
+    saveChecked(id);
   };
 
   return (
@@ -60,11 +60,11 @@ const WishList = () => {
       ) : (
         <div>
           <ul className={style.gridList}>
-            {wishes.map((wish, idx) => (
-              <div className={style.divForm} key={idx}>
-                <li className={style.gridItem}>
+            {wishes.map((wish, id, idx) => (
+              <div className={style.divForm}>
+                <li className={style.gridItem} key={id}>
                   {editingIndex === idx ? (
-                    <form onSubmit={() => handleSave(idx)}>
+                    <form onSubmit={() => handleSave(id)}>
                       <input
                         type="text"
                         value={editedName}
@@ -77,18 +77,18 @@ const WishList = () => {
                   ) : (
                     <>
                       <div className={style.wishChecked}>
-                        <span onClick={() => handleEdit(idx, wish.name)}>
+                        <span onClick={() => handleEdit(id, wish.name)}>
                           {wish.name}
                         </span>
                         <input
                           type="checkbox"
                           checked={wish.checked}
-                          onChange={() => handleCheck(idx)}
+                          onChange={() => handleCheck(id)}
                         />
                       </div>
                       <div className={style.divBtnDelete}>
                         <button
-                          onClick={() => handleDelete(idx)}
+                          onClick={() => handleDelete(id)}
                           className={style.btnDelete}
                         >
                           DELETE

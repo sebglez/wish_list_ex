@@ -1,62 +1,87 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
 
 const initialState = [];
+let idSum = 0;
+
 const WishesContext = createContext(initialState);
 
 function wishesReducer(state, action) {
   switch (action.type) {
     case "ADD_WISH":
-      return [...state, { name: action.payload, checked: false }];
+      const newWish = {
+        id: idSum++,
+        name: action.payload,
+        checked: false,
+      };
+
+      const newStateAdd = [...state, newWish];
+      console.log("New state after ADD_WISH:", newStateAdd);
+      localStorage.setItem("wishes", JSON.stringify(newStateAdd));
+      return newStateAdd;
 
     case "DELETE_WISH":
-      const newState = state.filter((wish, index) => index !== action.payload);
-      return newState;
+      const newStateDelete = state.filter((wish, id) => id !== action.payload);
+      localStorage.setItem("wishes", JSON.stringify(newStateDelete));
+      return newStateDelete;
 
     case "CLEAR_WISHES":
+      localStorage.setItem("wishes", JSON.stringify([]));
       return [];
 
     case "EDIT_WISH":
-      return state.map((wish, index) => {
-        if (index === action.payload.idx) {
+      const updatedStateEdit = state.map((wish, id) => {
+        if (id === action.payload.idd) {
           return { ...wish, name: action.payload.newWish };
         }
         return wish;
       });
+      localStorage.setItem("wishes", JSON.stringify(updatedStateEdit));
+      return updatedStateEdit;
 
     case "SAVE_CHECKED":
-      return state.map((wish, index) => {
-        if (index === action.payload.idx) {
+      const updatedStateChecked = state.map((wish, id) => {
+        if (id === action.payload.idx) {
           return { ...wish, checked: !wish.checked };
         }
         return wish;
       });
+      localStorage.setItem("wishes", JSON.stringify(updatedStateChecked));
+      return updatedStateChecked;
 
     default:
-      break;
+      return state;
   }
 }
 
 function ContextProvider({ children }) {
-  const [wishes, dispatch] = useReducer(wishesReducer, []);
+  const [wishes, dispatch] = useReducer(wishesReducer, initialState);
+
+  useEffect(() => {
+    const storedWishes = localStorage.getItem("wishes");
+    console.log("Stored wishes:", storedWishes);
+    if (storedWishes) {
+      dispatch({ type: "LOAD_WISHES", payload: JSON.parse(storedWishes) });
+    }
+  }, []);
 
   const addWish = (newWish) => {
     dispatch({ type: "ADD_WISH", payload: newWish });
   };
 
-  const deleteWish = (oldWishIndex) => {
-    dispatch({ type: "DELETE_WISH", payload: oldWishIndex });
+  const deleteWish = (oldWishId) => {
+    dispatch({ type: "DELETE_WISH", payload: oldWishId });
   };
 
   const clearWishes = () => {
     dispatch({ type: "CLEAR_WISHES" });
   };
 
-  const editWish = (idx, newWish) => {
-    dispatch({ type: "EDIT_WISH", payload: { idx, newWish } });
+  const editWish = (id, newWish) => {
+    dispatch({ type: "EDIT_WISH", payload: { id, newWish } });
   };
 
-  const saveChecked = (idx, newChecked) => {
-    dispatch({ type: "SAVE_CHECKED", payload: { idx } });
+  const saveChecked = (id, newChecked) => {
+    dispatch({ type: "SAVE_CHECKED", payload: { id } });
   };
 
   const value = {
@@ -75,7 +100,6 @@ function ContextProvider({ children }) {
 
 function useContextWishes() {
   const context = useContext(WishesContext);
-
   return context;
 }
 
