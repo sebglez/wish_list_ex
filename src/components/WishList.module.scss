@@ -1,0 +1,172 @@
+@mixin btnStyle {
+  width: 125px;
+  height: 30px;
+  font-size: 14px;
+  background-color: transparent;
+  border-radius: 5px;
+  border: 2px solid;
+  font-weight: bolder;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.startCreating {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 100%;
+  justify-content: flex-start;
+  align-content: center;
+  gap: 5%;
+  padding: 2%;
+  height: max-content;
+}
+
+.divForm {
+  display: grid;
+  grid-template-columns: repeat(5, 3rem);
+  list-style: none;
+  height: max-content;
+  padding: 1.5%;
+  width: 250px;
+}
+
+.liGrid {
+  display: grid;
+  width: 150px;
+}
+
+.wishChecked {
+  display: flex;
+  gap: 2rem;
+  padding: 2%;
+}
+
+.btnAdd {
+  @include btnStyle();
+  border-color: rgba(20, 153, 87, 0.397);
+  color: rgb(20, 153, 86);
+}
+
+.btnAdd:hover {
+  background-color: rgb(20, 153, 86);
+  color: white;
+}
+
+.styleForm {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding: 2%;
+
+  justify-content: flex-start;
+  margin-top: 50px;
+}
+
+.btnDelete {
+  @include btnStyle();
+  margin-top: 5px;
+}
+
+.btnDelete:hover {
+  background-color: rgb(243, 239, 239);
+  color: black;
+}
+
+.btnDone {
+  @include btnStyle();
+  margin-top: 5px;
+  background-color: transparent;
+  border: 2px solid rgba(20, 153, 87, 0.397);
+  color: rgb(20, 153, 86);
+  margin-left: 0px;
+  width: 190px;
+}
+
+.btnDone:hover {
+  background-color: rgb(20, 153, 86);
+  color: white;
+}
+
+.btnClearContainer {
+  display: flex;
+  padding: 2%;
+  width: 100%;
+
+  justify-content: center;
+  align-content: center;
+}
+.btnClear {
+  @include btnStyle();
+  border: 2px solid rgba(209, 31, 31, 0.623);
+  color: rgb(209, 31, 31);
+  margin-top: -50px;
+}
+
+.btnClear:hover {
+  border: 2px solid rgba(209, 31, 31, 0.623);
+  background-color: rgb(209, 31, 31);
+  color: white;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 20px;
+  list-style: none;
+}
+
+.gridList {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  list-style: none;
+  padding: 5%;
+}
+
+.gridItem {
+  width: 100%;
+}
+
+.labelWish {
+  border: 2px solid rgb(209, 204, 204);
+  border-radius: 5px;
+  width: 200px;
+}
+
+.flexContainer {
+  display: flex;
+
+  width: 80%;
+  margin-left: 40px;
+}
+
+.leftSection {
+  flex: 1;
+}
+
+.rightSection {
+  flex: 2;
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.miniImgTop {
+  display: flex;
+  justify-content: space-around;
+}
+
+.miniImgBot {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 80px;
+
+  width: 80%;
+  margin-left: 80px;
+}
+
+.title {
+  margin-top: -25px;
+  margin-bottom: 25px;
+}

@@ -2,15 +2,14 @@ import React from "react";
 import withHome from "../hoc/WithHome";
 import { useContextWishes } from "../context/useContextWishes";
 
-const CompletedWishes = () => {
+const ActiveWishes = () => {
   const { wishes } = useContextWishes();
-  const completedWishes = wishes.filter((wish) => wish.checked === true);
-
+  const activeWishes = wishes.filter((wish) => wish.checked === false);
   return (
     <div>
-      <h3>Completed Wishes:</h3>
+      <h3>Active Wishes:</h3>
       <ul>
-        {completedWishes.map((wish, idx) => (
+        {activeWishes.map((wish, idx) => (
           <li key={idx}>{wish.name}</li>
         ))}
       </ul>
@@ -18,4 +17,4 @@ const CompletedWishes = () => {
   );
 };
 
-export default withHome(CompletedWishes);
+export default withHome(ActiveWishes);
