@@ -14,6 +14,7 @@ const WishList = () => {
   const [editedName, setEditedName] = useState("");
   const { wishes, deleteWish, clearWishes, editWish, saveChecked } =
     useContextWishes();
+  console.log(wishes);
 
   const handleDelete = (id) => {
     deleteWish(id);
@@ -33,8 +34,8 @@ const WishList = () => {
     setEditingIndex(-1);
   };
 
-  const handleCheck = (id) => {
-    saveChecked(id);
+  const handleCheck = (id, isChecked) => {
+    saveChecked(id, isChecked);
   };
 
   return (
@@ -60,45 +61,49 @@ const WishList = () => {
       ) : (
         <div>
           <ul className={style.gridList}>
-            {wishes.map((wish, id, idx) => (
-              <div className={style.divForm}>
-                <li className={style.gridItem} key={id}>
-                  {editingIndex === idx ? (
-                    <form onSubmit={() => handleSave(id)}>
-                      <input
-                        type="text"
-                        value={editedName}
-                        onChange={(e) => setEditedName(e.target.value)}
-                      />
-                      <button type="submit" className={style.btnDone}>
-                        DONE
-                      </button>
-                    </form>
-                  ) : (
-                    <>
-                      <div className={style.wishChecked}>
-                        <span onClick={() => handleEdit(id, wish.name)}>
-                          {wish.name}
-                        </span>
+            {wishes.length > 0 &&
+              wishes.map((wish, idx) => (
+                <div className={style.divForm} key={idx}>
+                  <li className={style.gridItem}>
+                    {editingIndex === idx ? (
+                      <form onSubmit={() => handleSave(wish._id)}>
+                        {" "}
                         <input
-                          type="checkbox"
-                          checked={wish.checked}
-                          onChange={() => handleCheck(id)}
+                          type="text"
+                          value={editedName}
+                          onChange={(e) => setEditedName(e.target.value)}
                         />
-                      </div>
-                      <div className={style.divBtnDelete}>
-                        <button
-                          onClick={() => handleDelete(id)}
-                          className={style.btnDelete}
-                        >
-                          DELETE
+                        <button type="submit" className={style.btnDone}>
+                          DONE
                         </button>
-                      </div>
-                    </>
-                  )}
-                </li>
-              </div>
-            ))}
+                      </form>
+                    ) : (
+                      <>
+                        <div className={style.wishChecked}>
+                          <span onClick={() => handleEdit(idx, wish.name)}>
+                            {wish.name}
+                          </span>
+                          <input
+                            type="checkbox"
+                            checked={wish.checked}
+                            onChange={() =>
+                              handleCheck(wish._id, !wish.checked)
+                            }
+                          />
+                        </div>
+                        <div className={style.divBtnDelete}>
+                          <button
+                            onClick={() => handleDelete(wish._id)}
+                            className={style.btnDelete}
+                          >
+                            DELETE
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </li>
+                </div>
+              ))}
           </ul>
           <div className={style.btnClearContainer}>
             <button onClick={handleClear} className={style.btnClear}>

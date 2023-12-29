@@ -1,28 +1,32 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
 
+import axios from "axios";
+
 const initialState = [];
-let idSum = 0;
 
 const WishesContext = createContext(initialState);
 
-function wishesReducer(state, action) {
+async function wishesReducer(state, action) {
   switch (action.type) {
     case "ADD_WISH":
       const newWish = {
-        id: idSum++,
         name: action.payload,
         checked: false,
       };
 
-      const newStateAdd = [...state, newWish];
-      console.log("New state after ADD_WISH:", newStateAdd);
-      localStorage.setItem("wishes", JSON.stringify(newStateAdd));
-      return newStateAdd;
+      const wishList = await axios.post("http://localhost:3001/wish", newWish);
+      console.log("New state after ADD_WISH:");
+      return wishList;
+
+    case "GET_WISHES":
+      return action.payload;
 
     case "DELETE_WISH":
-      const newStateDelete = state.filter((wish, id) => id !== action.payload);
-      localStorage.setItem("wishes", JSON.stringify(newStateDelete));
-      return newStateDelete;
+      const id = action.payload;
+      const wishListDeleted = await axios.delete(
+        `http://localhost:3001/wish/${id}`
+      );
+      return wishListDeleted;
 
     case "CLEAR_WISHES":
       localStorage.setItem("wishes", JSON.stringify([]));
@@ -39,9 +43,9 @@ function wishesReducer(state, action) {
       return updatedStateEdit;
 
     case "SAVE_CHECKED":
-      const updatedStateChecked = state.map((wish, id) => {
-        if (id === action.payload.idx) {
-          return { ...wish, checked: !wish.checked };
+      const updatedStateChecked = state.map((wish) => {
+        if (wish.id === action.payload.id) {
+          return { ...wish, checked: !action.payload.newChecked };
         }
         return wish;
       });
@@ -68,6 +72,10 @@ function ContextProvider({ children }) {
     dispatch({ type: "ADD_WISH", payload: newWish });
   };
 
+  const getWishes = (wishList) => {
+    dispatch({ type: "GET_WISHES", payload: wishList });
+  };
+
   const deleteWish = (oldWishId) => {
     dispatch({ type: "DELETE_WISH", payload: oldWishId });
   };
@@ -79,13 +87,14 @@ function ContextProvider({ children }) {
   const editWish = (id, newWish) => {
     dispatch({ type: "EDIT_WISH", payload: { id, newWish } });
   };
-
-  const saveChecked = (id, newChecked) => {
-    dispatch({ type: "SAVE_CHECKED", payload: { id } });
+  const saveChecked = (id, isChecked) => {
+    console.log(`ID: ${id}, isChecked: ${isChecked}`);
+    dispatch({ type: "SAVE_CHECKED", payload: { id, isChecked } });
   };
 
   const value = {
     wishes,
+    getWishes,
     addWish,
     deleteWish,
     clearWishes,

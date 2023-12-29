@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import "./App.scss";
-import { ContextProvider } from "./context/useContextWishes";
+import { ContextProvider, useContextWishes } from "./context/useContextWishes";
 import ActiveWishes from "./pages/ActiveWished";
 import CompletedWishes from "./pages/CompletedWishes";
 import Home from "./pages/Home";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import axios from "axios";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home></Home> },
@@ -14,11 +16,19 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const { getWishes } = useContextWishes();
+
+  useEffect(() => {
+    async function getApiWishes() {
+      const apiWishes = await axios.get("http://localhost:3001/wish");
+      getWishes(apiWishes.data);
+    }
+    getApiWishes();
+  }, []);
+
   return (
     <div className="mainDiv">
-      <ContextProvider>
-        <RouterProvider router={router}></RouterProvider>
-      </ContextProvider>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
